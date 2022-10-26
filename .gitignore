@@ -1,0 +1,14 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+/Assets/PLE_Ships
+#*.png
+/Library
+/Logs
+/obj
+.vs
+/Packages
+/Temp
+.vsconfig
+*.csproj
+*.sln
+/out
