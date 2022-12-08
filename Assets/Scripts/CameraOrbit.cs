@@ -8,7 +8,12 @@ using UnityEngine;
 public class CameraOrbit : MonoBehaviour
 {
     public GameObject target;
+    public LayerMask collisionLayers = -1;
+    public float offsetFromWall = 0.1f;
+    public float distanceSpeed = 10f;
     public float distance = 10.0f;
+    public float distanceMin = .5f;
+    public float distanceMax = 1.2f;
 
     public float xSpeed = 250.0f;
     public float ySpeed = 120.0f;
@@ -28,9 +33,13 @@ public class CameraOrbit : MonoBehaviour
 
     void LateUpdate()
     {
-        if (distance < 2) distance = 2;
-        distance -= Input.GetAxis("Mouse ScrollWheel") * 2;
-        if (target && (Input.GetMouseButton(0) || Input.GetMouseButton(1)))
+        if (GameManager.instance.gameState != GameState.RUNNING)
+            return;
+
+        //if (distance < .5f) distance = .5f;
+        distance = Mathf.Clamp(distance, distanceMin, distanceMax);
+        distance -= Input.GetAxis("Mouse ScrollWheel") * distanceSpeed * Time.deltaTime;
+        if (target && (Input.GetAxis("Mouse ScrollWheel") != 0 || Input.GetMouseButton(0) || Input.GetMouseButton(1)))
         {
             var pos = Input.mousePosition;
             var dpiScale = 1f;
@@ -41,8 +50,8 @@ public class CameraOrbit : MonoBehaviour
             if (pos.x < 380 * dpiScale && Screen.height - pos.y < 250 * dpiScale) return;
 
             //comment out these two lines if you don't want to hide mouse curser or you have a UI button 
-                Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.Locked;
+            //    Cursor.visible = false;
+            //Cursor.lockState = CursorLockMode.Locked;
 
             x += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
             y -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
@@ -50,6 +59,19 @@ public class CameraOrbit : MonoBehaviour
             y = ClampAngle(y, yMinLimit, yMaxLimit);
             var rotation = Quaternion.Euler(y, x, 0);
             var position = rotation * new Vector3(0.0f, 0.0f, -distance) + target.transform.position;
+
+            /*RaycastHit hit;
+            bool isOk = false;
+            float finalDist = distance;
+            if (Physics.Linecast(target.transform.position, position - Vector3.up + Vector3.forward, out hit, collisionLayers.value)) // slightly behind and below the camera
+            {
+                // Final distance
+                finalDist = Vector3.Distance(target.transform.position, hit.point) - offsetFromWall;
+                isOk = true;
+            }
+
+            position = rotation * new Vector3(0.0f, 0.0f, -finalDist) + target.transform.position;
+            */
             transform.rotation = rotation;
             transform.position = position;
 
@@ -57,8 +79,8 @@ public class CameraOrbit : MonoBehaviour
         else
         {
             //comment out these two lines if you don't want to hide mouse curser or you have a UI button 
-                Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.None;
+            //    Cursor.visible = true;
+            //Cursor.lockState = CursorLockMode.None;
         }
 
         if (Math.Abs(prevDistance - distance) > 0.001f)
@@ -83,7 +105,13 @@ public class CameraOrbit : MonoBehaviour
     public void Init()
     {
         var angles = transform.eulerAngles;
-        x = angles.y;
-        y = angles.x;
+        x = target.transform.eulerAngles.y;
+        y = 20;
+
+        y = ClampAngle(y, yMinLimit, yMaxLimit);
+        var rotation = Quaternion.Euler(y, x, 0);
+        var position = rotation * new Vector3(0.0f, 0.0f, -distance) + target.transform.position;
+        transform.rotation = rotation;
+        transform.position = position;
     }
 }

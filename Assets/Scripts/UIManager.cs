@@ -5,8 +5,14 @@ using UnityEngine;
 public class UIManager : MonoBehaviour
 {
     public static UIManager instance = null;
+    public UIScreen characterUIScreen;
+    public UIScreen shipUIScreen;
+    public UIScreen routeUIScreen;
     public UIScreen weatherUIScreen;
+    public UIScreen titleScreen;
     public UIScreen mainUIScreen;
+    public UIScreen winUIScreen;
+    public UIScreen loseUIScreen;
     private PlayerInfo playerInfo;
     private GameManager gameManager;
 
@@ -20,12 +26,13 @@ public class UIManager : MonoBehaviour
     {
         gameManager = GameManager.instance;        
         playerInfo = GameManager.instance.playerInfo;
-        if (string.IsNullOrEmpty(playerInfo.nickName))
+        characterUIScreen.Focus();
+        /*if (string.IsNullOrEmpty(playerInfo.nickName))
             weatherUIScreen.Focus();
         else
         {
             mainUIScreen.Focus();
-        }
+        }*/
         Cursor.visible = true;
     }
 

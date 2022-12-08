@@ -11,21 +11,38 @@ public class WeatherSelectScreen : UIScreen
     public string[] weatherSpriteNameArray;
     [HideInInspector]
     public int skinIndex = 0;
-
+    ShipControl shipControl;
     private void Awake()
     {
         instance = this;
+        shipControl = new ShipControl();
     }
     // Start is called before the first frame update
     void Start()
     {
         weatherTypeLabel.text = skinTypeArray[skinIndex];
+
+        shipControl.ShipController.Select.performed += ctx => NextButtonClicked();
+        shipControl.ShipController.Back.performed += ctx => PrevButtonClicked();
+        shipControl.ShipController.Left.performed += ctx => SkinPrevButtonClicked();
+        shipControl.ShipController.Right.performed += ctx => SkinNextButtonClicked();
     }
 
     // Update is called once per frame
     void Update()
     {
         
+    }
+    public void WeatherSelectButtonClicked()
+    {
+        skinIndex++;
+        if (skinIndex == skinTypeArray.Length)
+        {
+            skinIndex = 0;
+        }
+
+        weatherTypeLabel.text = skinTypeArray[skinIndex];
+        weathersprite.spriteName = weatherSpriteNameArray[skinIndex];
     }
 
     public void SkinPrevButtonClicked()
@@ -56,9 +73,24 @@ public class WeatherSelectScreen : UIScreen
         UIManager.instance.mainUIScreen.Focus();
     }
 
+    public void PrevButtonClicked()
+    {
+        UIManager.instance.routeUIScreen.Focus();
+    }
+
     public override void Init()
     {
-        if (GameManager.instance.player != null)
-            Destroy(GameManager.instance.player);
-    }    
+        if (GameManager.instance.ship != null)
+            Destroy(GameManager.instance.ship);
+    }
+
+    private void OnEnable()
+    {
+        shipControl.Enable();
+    }
+
+    private void OnDisable()
+    {
+        shipControl.Disable();
+    }
 }

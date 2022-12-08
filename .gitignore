@@ -1,6 +1,11 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 /Assets/PLE_Ships
+/Assets/FloatingEntities
+/Assets/Character
+/Assets/Model
+/Assets/SkySeries Freebie
+/Assets/Video
 #*.png
 /Library
 /Logs

@@ -1,7 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+
+public class Singleton<T> where T:class, new()
+{
+    public Singleton() { }
+    private static readonly Lazy<T> instance = new Lazy<T>(()=> new T());
+    public static T Instance { get { return instance.Value; } }
+}
 
 public class PlayerInfo
 {
@@ -77,7 +85,7 @@ public class GameManager : MonoBehaviour
     [HideInInspector]
     public float curAltitude;
     [HideInInspector]
-    public GameObject player;
+    public GameObject ship;
     [HideInInspector]
     public GameState gameState = GameState.NONE;
 
@@ -87,8 +95,10 @@ public class GameManager : MonoBehaviour
     public CameraOrbit orbitalCamera;
     public Light directionalLight;
     public GameObject oceanGameObject;
+    public Material[] skyBoxArray;
+    public GameObject[] routeObjArray;
     private Transform rainTransfrom;
-
+    
     private void Awake()
     {
         instance = this;
@@ -130,22 +140,48 @@ public class GameManager : MonoBehaviour
         if (spawnPointOfPlayer == null)
             return;
 
+        for (int i = 0; i < routeObjArray.Length; i++)
+            if(i == RouteSelectScreen.instance.routeIndex)
+            {
+                routeObjArray[i].SetActive(true);
+                spawnPointOfPlayer = routeObjArray[i].transform.Find("StartPoint");
+            }else
+                routeObjArray[i].SetActive(false);
+
         oceanGameObject.SetActive(true);
-        player = Instantiate(Resources.Load("Ships/player") as GameObject) as GameObject;
-        player.transform.parent = spawnPointOfPlayer;
-        player.transform.localPosition = Vector3.zero;
-        player.transform.localRotation = Quaternion.identity;
+        ship = Instantiate(Resources.Load("Ships/ship") as GameObject) as GameObject;
+        Transform shipMesh = ship.transform.Find("Mesh");
+        if(shipMesh)
+        {
+            MeshRenderer shipMeshRenderer = shipMesh.GetComponent<MeshRenderer>();
+            string materialStr = ShipMaterialSelectScreen.instance.materialTypeArray[ShipMaterialSelectScreen.instance.materialIndex];
+            shipMeshRenderer.sharedMaterial = Resources.Load("Materials/LCS_" + materialStr) as Material;
+        }
+        BoatController boatController = ship.GetComponent<BoatController>();
+        ship.transform.parent = spawnPointOfPlayer;
+        ship.transform.localPosition = Vector3.zero;
+        ship.transform.localRotation = Quaternion.identity;
         gameState = GameState.RUNNING;
         curTime = 0;
         playerInfo.energy = energyLimit;
 
-        rainTransfrom = player.transform.Find("Rain");
+        rainTransfrom = ship.transform.Find("Rain");
         rainTransfrom.gameObject.SetActive(false);
 
-        orbitalCamera.target = player;
+        orbitalCamera.target = ship;
         orbitalCamera.enabled = true;
-        orbitalCamera.transform.parent = player.transform;
+        orbitalCamera.transform.parent = ship.transform;
         orbitalCamera.Init();
+
+        GameObject captainObj = Instantiate(Resources.Load("Players/player" + CharacterSelectScreen.instance.skinIndex.ToString()) as GameObject) as GameObject;       
+        captainObj.transform.parent = boatController.spawnPoint;            
+        captainObj.transform.localPosition = Vector3.zero;
+        captainObj.transform.localRotation = Quaternion.identity;
+        captainObj.transform.localScale = Vector3.one;
+
+        CaptainCtrl captainCtrl = captainObj.GetComponent<CaptainCtrl>();
+        boatController.panelCamera.headBone = captainCtrl.headBoneTrans;
+        boatController.panelCamera.hero = captainObj.transform;
     }
 
     public void AddEnergy(float addEnergy)
@@ -154,33 +190,59 @@ public class GameManager : MonoBehaviour
 
     public void InitWeather()
     {
-        PropellerBoats boatController = player.GetComponent<PropellerBoats>();
+        PropellerBoats boatController = ship.GetComponent<PropellerBoats>();
         switch (OceanAdvanced.s_waveIndex)
         {
             case 0:
                 rainTransfrom.gameObject.SetActive(true);
-                Camera.main.clearFlags = CameraClearFlags.SolidColor;
+                //Camera.main.clearFlags = CameraClearFlags.SolidColor;
                 directionalLight.intensity = .1f;
                 directionalLight.color = Color.black;                
-                boatController.engine_max_rpm = 700;
+                boatController.engine_max_rpm = 3000;
                 boatController.acceleration_cst = 5f;
                 boatController.drag = .01f;
+                RenderSettings.skybox = skyBoxArray[0];
+                RenderSettings.ambientSkyColor = new Color(.3f, .3f, .3f);
                 break;
             case 1:
-                boatController.engine_max_rpm = 1200;
+                boatController.engine_max_rpm = 3500;
                 boatController.acceleration_cst = 10f;
                 boatController.drag = .5f;
+                RenderSettings.skybox = skyBoxArray[1];
+                RenderSettings.ambientSkyColor = Color.white;
                 break;
 
             case 2:
-                Camera.main.clearFlags = CameraClearFlags.SolidColor;
+                //Camera.main.clearFlags = CameraClearFlags.SolidColor;
                 directionalLight.intensity = .1f;
                 directionalLight.color = Color.black;
 
-                boatController.engine_max_rpm = 1200;
+                boatController.engine_max_rpm = 3500;
                 boatController.acceleration_cst = 10f;
                 boatController.drag = .5f;
+
+                RenderSettings.skybox = skyBoxArray[0];
+                RenderSettings.ambientSkyColor = new Color(.3f, .3f, .3f);
                 break;
         }
+    }
+
+    public void EndStage()
+    {
+        switch(gameState)
+        {
+            case GameState.WIN:
+                UIManager.instance.winUIScreen.Focus();
+                break;
+            case GameState.LOSE:
+                UIManager.instance.loseUIScreen.Focus();
+                break;
+        }
+    }
+
+    IEnumerator EndStageRoutine()
+    {
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadSceneAsync(0);
     }
 }

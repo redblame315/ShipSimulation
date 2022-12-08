@@ -43,11 +43,11 @@ public class GameEntity : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-#if UNITY_EDITOR
+//#if UNITY_EDITOR
 
         if (rb.centerOfMass != S_centerOfMass + centerOfMassOffset)
             rb.centerOfMass = S_centerOfMass + centerOfMassOffset;
-#endif
+//#endif
 
         speed = (transform.position - last_position) / Time.deltaTime;
         last_position = transform.position;
