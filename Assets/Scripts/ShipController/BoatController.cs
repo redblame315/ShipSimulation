@@ -18,6 +18,8 @@ public class BoatController : MonoBehaviour
     public Transform spawnPoint;
     public HeroCamera panelCamera;
     public BoatControlInput boatControlInput = new BoatControlInput();
+    public float fDetectCollisionDelay = 5f;
+    float fCurDetectTIme = 0;
     ShipControl shipControl;
     private void Awake()
     {
@@ -31,6 +33,15 @@ public class BoatController : MonoBehaviour
     {
         if (GameManager.instance.gameState != GameState.RUNNING)
             return;
+
+        fCurDetectTIme -= Time.deltaTime;
+        if (fCurDetectTIme < 0)
+        {
+            fCurDetectTIme = 0;
+            if(MainScreen.instance.warningUIObj.activeSelf)
+                MainScreen.instance.warningUIObj.SetActive(false);
+        }
+            
 
         if (Input.GetKeyDown(KeyCode.P))
         {
@@ -103,5 +114,16 @@ public class BoatController : MonoBehaviour
             forward = true;
             ship.Reverse();
         }*/
+    }
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (gameObject.tag != "Player" || collision.gameObject.tag == "NavPoint" || fCurDetectTIme > 0)
+            return;
+
+        Debug.LogError("Collision--->" + collision.gameObject.name);        
+        fCurDetectTIme = fDetectCollisionDelay;
+        MainScreen.instance.AddTime(false);
+        MainScreen.instance.warningUIObj.SetActive(true);
     }
 }

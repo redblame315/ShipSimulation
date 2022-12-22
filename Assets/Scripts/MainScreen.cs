@@ -38,6 +38,7 @@ public class MainScreen : UIScreen
     public UISprite engineStateSprite;
     public UILabel engineGuideLabel;
     public UILabel countDownLabel;
+    public GameObject warningUIObj;
     public float timeLimit = 60;
     public float addTimeAmount = 5;
     float curTime;
@@ -315,12 +316,15 @@ public class MainScreen : UIScreen
         AddTime();
     }
 
-    public void AddTime()
+    public void AddTime(bool b_Add = true)
     {
         if (gameManager.gameState != GameState.RUNNING)
             return;
 
-        curTime += addTimeAmount;
+        if(b_Add)
+            curTime += addTimeAmount;
+        else
+            curTime -= addTimeAmount;
     }
 
     private void OnEnable()

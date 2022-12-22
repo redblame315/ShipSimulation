@@ -53,9 +53,9 @@ public class PlayerInfo
     private int _playerIndex = 0;
     private float _energy = 0;
     public PlayerInfo()
-    {        
+    {
     }
-   
+
     public void Save()
     {
         PlayerPrefs.SetString("nickName", _nickName);
@@ -98,7 +98,7 @@ public class GameManager : MonoBehaviour
     public Material[] skyBoxArray;
     public GameObject[] routeObjArray;
     private Transform rainTransfrom;
-    
+
     private void Awake()
     {
         instance = this;
@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
         }
 
         mainScreen.UpdateGameStateInfo();*/
-            
+
         if(Input.GetKey(KeyCode.Escape))
         {
             playerInfo.nickName = "";
@@ -173,8 +173,8 @@ public class GameManager : MonoBehaviour
         orbitalCamera.transform.parent = ship.transform;
         orbitalCamera.Init();
 
-        GameObject captainObj = Instantiate(Resources.Load("Players/player" + CharacterSelectScreen.instance.skinIndex.ToString()) as GameObject) as GameObject;       
-        captainObj.transform.parent = boatController.spawnPoint;            
+        GameObject captainObj = Instantiate(Resources.Load("Players/player" + CharacterSelectScreen.instance.skinIndex.ToString()) as GameObject) as GameObject;
+        captainObj.transform.parent = boatController.spawnPoint;
         captainObj.transform.localPosition = Vector3.zero;
         captainObj.transform.localRotation = Quaternion.identity;
         captainObj.transform.localScale = Vector3.one;
@@ -197,15 +197,15 @@ public class GameManager : MonoBehaviour
                 rainTransfrom.gameObject.SetActive(true);
                 //Camera.main.clearFlags = CameraClearFlags.SolidColor;
                 directionalLight.intensity = .1f;
-                directionalLight.color = Color.black;                
-                boatController.engine_max_rpm = 3000;
+                directionalLight.color = Color.black;
+                boatController.engine_max_rpm = 2000;
                 boatController.acceleration_cst = 5f;
                 boatController.drag = .01f;
                 RenderSettings.skybox = skyBoxArray[0];
                 RenderSettings.ambientSkyColor = new Color(.3f, .3f, .3f);
                 break;
             case 1:
-                boatController.engine_max_rpm = 3500;
+                boatController.engine_max_rpm = 2500;
                 boatController.acceleration_cst = 10f;
                 boatController.drag = .5f;
                 RenderSettings.skybox = skyBoxArray[1];
@@ -217,7 +217,7 @@ public class GameManager : MonoBehaviour
                 directionalLight.intensity = .1f;
                 directionalLight.color = Color.black;
 
-                boatController.engine_max_rpm = 3500;
+                boatController.engine_max_rpm = 2500;
                 boatController.acceleration_cst = 10f;
                 boatController.drag = .5f;
 

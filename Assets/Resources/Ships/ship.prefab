@@ -555,6 +555,7 @@ MonoBehaviour:
   ship: {fileID: 7332222995849890086}
   spawnPoint: {fileID: 4368871079698104580}
   panelCamera: {fileID: 32712000}
+  fDetectCollisionDelay: 3
 --- !u!114 &7332222995849890084
 MonoBehaviour:
   m_ObjectHideFlags: 0

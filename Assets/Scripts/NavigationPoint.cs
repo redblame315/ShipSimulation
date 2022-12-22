@@ -5,6 +5,7 @@ using UnityEngine;
 public class NavigationPoint : MonoBehaviour
 {
     public NavigationPoint nextNavPoint;
+    public bool bRotateCamera = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +15,8 @@ public class NavigationPoint : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!bRotateCamera)
+            return;
         Vector3 dir = BoatController.instance.transform.position - transform.position;
         dir.y = 0;
         dir.Normalize();
@@ -23,6 +26,13 @@ public class NavigationPoint : MonoBehaviour
     }
 
     private void OnTriggerEnter(Collider other)
+    {
+        if (GameManager.instance.gameState != GameState.RUNNING || other.tag != "Player")
+            return;
+
+        bRotateCamera = false;
+    }
+    private void OnTriggerExit(Collider other)
     {
         if (GameManager.instance.gameState != GameState.RUNNING || other.tag != "Player")
             return;

@@ -92,14 +92,12 @@ public class PropellerBoats : MonoBehaviour
     {
         angle -= angle_speed * Time.deltaTime;        
         angle = Mathf.Clamp(angle, -90F, 90F);
-        Debug.LogFormat("Angle {0}", angle);
     }
 
     public void RudderLeft()
     {
         angle += angle_speed * Time.deltaTime;
         angle = Mathf.Clamp(angle, -90F, 90F);
-        Debug.LogFormat("Angle {0}", angle);
     }
 
     public void SetDirection(int _direction)
