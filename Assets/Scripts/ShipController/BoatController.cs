@@ -121,9 +121,14 @@ public class BoatController : MonoBehaviour
         if (gameObject.tag != "Player" || collision.gameObject.tag == "NavPoint" || fCurDetectTIme > 0)
             return;
 
-        Debug.LogError("Collision--->" + collision.gameObject.name);        
         fCurDetectTIme = fDetectCollisionDelay;
-        MainScreen.instance.AddTime(false);
+        MainScreen.instance.AddTime(MainScreen.s_addTimeAmount, false);
         MainScreen.instance.warningUIObj.SetActive(true);
+
+        MapObject mapObject = collision.gameObject.GetComponent<MapObject>();
+        if(mapObject != null && mapObject.mapObjectType == MapObjectType.Obstacle)
+        {
+            mapObject.isHit = true;
+        }
     }
 }

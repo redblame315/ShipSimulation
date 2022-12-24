@@ -47,8 +47,8 @@ MonoBehaviour:
   material: {fileID: 2100000, guid: 6c84f96534ff81041b847e1c39a8b8c5, type: 2}
   mSprites:
   - name: countdown
-    x: 755
-    y: 724
+    x: 0
+    y: 1
     width: 254
     height: 254
     borderLeft: 0
@@ -60,8 +60,8 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: map_dest
-    x: 1639
-    y: 1067
+    x: 1627
+    y: 1071
     width: 238
     height: 350
     borderLeft: 0
@@ -86,8 +86,8 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: Map_Route_dotline
-    x: 599
-    y: 983
+    x: 595
+    y: 987
     width: 524
     height: 434
     borderLeft: 0
@@ -99,8 +99,8 @@ MonoBehaviour:
     paddingTop: 103
     paddingBottom: 89
   - name: map_start
-    x: 238
-    y: 23
+    x: 1866
+    y: 1201
     width: 149
     height: 220
     borderLeft: 0
@@ -113,7 +113,7 @@ MonoBehaviour:
     paddingBottom: 0
   - name: MiniMapBackground
     x: 0
-    y: 248
+    y: 256
     width: 506
     height: 508
     borderLeft: 0
@@ -125,8 +125,8 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: MiniMapBackground_real
-    x: 1128
-    y: 1062
+    x: 1120
+    y: 1066
     width: 506
     height: 355
     borderLeft: 0
@@ -138,8 +138,8 @@ MonoBehaviour:
     paddingTop: 77
     paddingBottom: 76
   - name: RoutePoint
-    x: 1250
-    y: 1467
+    x: 1242
+    y: 1471
     width: 64
     height: 64
     borderLeft: 0
@@ -151,8 +151,8 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: Ship
-    x: 599
-    y: 347
+    x: 595
+    y: 355
     width: 151
     height: 631
     borderLeft: 0
@@ -164,8 +164,8 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: stage_success
-    x: 1013
-    y: 1437
+    x: 1009
+    y: 1441
     width: 232
     height: 94
     borderLeft: 0
@@ -177,8 +177,8 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: Star
-    x: 0
-    y: 6
+    x: 255
+    y: 18
     width: 233
     height: 237
     borderLeft: 1
@@ -189,8 +189,21 @@ MonoBehaviour:
     paddingRight: 0
     paddingTop: 0
     paddingBottom: 0
+  - name: timer_bonus
+    x: 747
+    y: 730
+    width: 200
+    height: 256
+    borderLeft: 0
+    borderRight: 0
+    borderTop: 0
+    borderBottom: 0
+    paddingLeft: 0
+    paddingRight: 0
+    paddingTop: 0
+    paddingBottom: 0
   - name: Weather_Nighty
-    x: 1013
+    x: 1009
     y: 1536
     width: 512
     height: 512
@@ -204,7 +217,7 @@ MonoBehaviour:
     paddingBottom: 0
   - name: Weather_Stormy
     x: 0
-    y: 761
+    y: 765
     width: 594
     height: 656
     borderLeft: 0
@@ -216,7 +229,7 @@ MonoBehaviour:
     paddingTop: 0
     paddingBottom: 0
   - name: Weather_Sunny
-    x: 1530
+    x: 1522
     y: 1536
     width: 512
     height: 512

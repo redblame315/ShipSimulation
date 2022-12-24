@@ -8,6 +8,8 @@ public class MapObject : MonoBehaviour
     public MapObjectType mapObjectType = MapObjectType.Hero;
     [HideInInspector]
     public MapItem mapItem;
+    [HideInInspector]
+    public bool isHit = false;
     // Start is called before the first frame update
     void Start()
     {

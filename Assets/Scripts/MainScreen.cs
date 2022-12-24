@@ -35,12 +35,13 @@ public class MainScreen : UIScreen
     public UIToggle cameraModeTPC1Toggle;
     public UIToggle cameraModeTPC2Toggle;
     public UISprite navPointSuccessSprite;
+    public UISprite obstaclePointSuccessSprite;
     public UISprite engineStateSprite;
     public UILabel engineGuideLabel;
     public UILabel countDownLabel;
     public GameObject warningUIObj;
     public float timeLimit = 60;
-    public float addTimeAmount = 5;
+    public static float s_addTimeAmount = 5;
     float curTime;
     int cameraModeIndex = 0;
 
@@ -313,18 +314,39 @@ public class MainScreen : UIScreen
         tweenAlpha.ResetToBeginning();
         tweenScale.PlayForward();
 
-        AddTime();
+        AddTime(s_addTimeAmount);
     }
 
-    public void AddTime(bool b_Add = true)
+    public void ChecksObstacleSuccess(int count)
+    {
+        if (count == 0)
+            return;
+
+        obstaclePointSuccessSprite.transform.localScale = Vector3.zero;
+        obstaclePointSuccessSprite.color = new Color(255, 255, 255, 255);
+
+        UILabel timeLabel = obstaclePointSuccessSprite.GetComponentInChildren<UILabel>();
+        timeLabel.text = string.Format("{0}s",s_addTimeAmount * count);
+
+        TweenScale tweenScale = obstaclePointSuccessSprite.GetComponent<TweenScale>();
+        TweenAlpha tweenAlpha = obstaclePointSuccessSprite.GetComponent<TweenAlpha>();
+        tweenScale.ResetToBeginning();
+        tweenAlpha.ResetToBeginning();
+        tweenScale.PlayForward();
+
+        AddTime(s_addTimeAmount * count);
+    }
+
+
+    public void AddTime(float amount, bool b_Add = true)
     {
         if (gameManager.gameState != GameState.RUNNING)
             return;
 
         if(b_Add)
-            curTime += addTimeAmount;
+            curTime += amount;
         else
-            curTime -= addTimeAmount;
+            curTime -= amount;
     }
 
     private void OnEnable()

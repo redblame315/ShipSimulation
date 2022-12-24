@@ -6,6 +6,7 @@ public class NavigationPoint : MonoBehaviour
 {
     public NavigationPoint nextNavPoint;
     public bool bRotateCamera = true;
+    public MapObject[] obstacleArray;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +39,15 @@ public class NavigationPoint : MonoBehaviour
             return;
 
         MainScreen.instance.ChecksNavPointSuccess();
+
+        //Get non-hit obstacle count and add timer
+        int obstacleCount = 0;
+        for (int i = 0; i < obstacleArray.Length; i++)
+            if (!obstacleArray[i].isHit)
+                obstacleCount++;
+
+        MainScreen.instance.ChecksObstacleSuccess(obstacleCount);
+
         MapObject mapObject = gameObject.GetComponentInChildren<MapObject>();
        
         if(mapObject)
