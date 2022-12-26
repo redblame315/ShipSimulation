@@ -86,7 +86,7 @@ public class MainScreen : UIScreen
 
     public void UpdateGameStateInfo()
     {
-        
+
     }
 
     // Start is called before the first frame update
@@ -120,7 +120,7 @@ public class MainScreen : UIScreen
             return;
         }
         countDownLabel.text = string.Format("{0:0.00}", curTime);
-        
+
         /*if (Input.GetKey(KeyCode.B))
             SelectButtonClicked();
         else if(Input.GetKeyUp(KeyCode.F))
@@ -142,7 +142,7 @@ public class MainScreen : UIScreen
             cameraModeIndex++;
             if (cameraModeIndex == 3)
                 cameraModeIndex = 0;
-            
+
             switch(cameraModeIndex)
             {
                 case 0:
@@ -235,7 +235,7 @@ public class MainScreen : UIScreen
         }
     }
 
-    //B7 : 
+    //B7 :
     public void EngineStartButtonClicked()
     {
         engineStartToggle.isChecked = true;
@@ -326,7 +326,7 @@ public class MainScreen : UIScreen
         obstaclePointSuccessSprite.color = new Color(255, 255, 255, 255);
 
         UILabel timeLabel = obstaclePointSuccessSprite.GetComponentInChildren<UILabel>();
-        timeLabel.text = string.Format("{0}s",s_addTimeAmount * count);
+        timeLabel.text = string.Format("+{0}s",s_addTimeAmount * count);
 
         TweenScale tweenScale = obstaclePointSuccessSprite.GetComponent<TweenScale>();
         TweenAlpha tweenAlpha = obstaclePointSuccessSprite.GetComponent<TweenAlpha>();
